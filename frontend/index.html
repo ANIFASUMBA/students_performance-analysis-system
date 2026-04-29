@@ -1,0 +1,241 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CoD AI Command Center | Meru University</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <style>
+      .sidebar-gradient {
+        background: linear-gradient(180deg, #0f172a 0%, #1e293b 100%);
+      }
+      .risk-card:hover {
+        transform: translateY(-2px);
+        transition: 0.2s;
+        cursor: pointer;
+        border-color: #3b82f6;
+      }
+      .animate-fade {
+        animation: fadeIn 0.5s ease-in;
+      }
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(10px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+    </style>
+  </head>
+  <body class="bg-slate-50 font-sans flex h-screen overflow-hidden">
+    <div
+      id="auth-overlay"
+      class="fixed inset-0 bg-slate-900 z-50 flex flex-col justify-center items-center sidebar-gradient transition-opacity duration-500"
+    >
+      <div class="text-center mb-10">
+        <div
+          class="w-20 h-20 bg-blue-600 rounded-2xl mx-auto mb-6 flex items-center justify-center shadow-2xl shadow-blue-500/50"
+        >
+          <svg
+            class="w-10 h-10 text-white"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"
+            ></path>
+          </svg>
+        </div>
+        <h1 class="text-4xl font-black tracking-tighter text-white">
+          MUST <span class="text-blue-400">AI</span>
+        </h1>
+        <p
+          class="text-xs text-blue-300 font-bold uppercase tracking-widest mt-2"
+        >
+          School of Computing Command Center
+        </p>
+      </div>
+
+      <div
+        class="bg-white p-10 rounded-3xl shadow-2xl w-full max-w-md border border-slate-100"
+      >
+        <h2 class="text-xl font-black text-slate-800 mb-2">
+          Administrative Gateway
+        </h2>
+        <p class="text-slate-500 text-sm mb-8">
+          Enter your secure credentials to access the intelligence core.
+        </p>
+
+        <div
+          id="login-error"
+          class="hidden bg-red-50 text-red-600 border border-red-200 p-3 rounded-lg text-xs font-bold mb-6 text-center"
+        >
+          Invalid credentials.
+        </div>
+
+        <div class="space-y-5">
+          <div>
+            <label
+              class="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2"
+              >System Username</label
+            >
+            <input
+              type="text"
+              id="login-username"
+              placeholder="e.g. cod_sci"
+              class="w-full bg-slate-50 border-2 border-slate-200 p-4 rounded-xl outline-none focus:border-blue-500 transition text-slate-800 font-bold"
+            />
+          </div>
+          <div>
+            <label
+              class="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2"
+              >Passcode</label
+            >
+            <input
+              type="password"
+              id="login-password"
+              placeholder="••••••••"
+              class="w-full bg-slate-50 border-2 border-slate-200 p-4 rounded-xl outline-none focus:border-blue-500 transition text-slate-800 font-bold"
+            />
+          </div>
+
+          <button
+            onclick="attemptLogin()"
+            id="login-btn"
+            class="w-full bg-blue-600 text-white font-black py-4 rounded-xl hover:bg-blue-700 shadow-lg shadow-blue-500/30 transition-all duration-300 transform hover:-translate-y-1 mt-4"
+          >
+            AUTHENTICATE
+          </button>
+        </div>
+      </div>
+
+      <div class="mt-8 text-slate-400 text-xs text-center space-y-1">
+        <p><strong>Demo Access:</strong></p>
+        <p>Configured via backend environment variables:</p>
+        <p>COD_USERNAME / COD_PASSWORD and DEAN_USERNAME / DEAN_PASSWORD</p>
+      </div>
+    </div>
+    <div class="w-72 sidebar-gradient text-white flex flex-col p-6 shadow-2xl">
+      <div class="mb-10">
+        <h1 class="text-2xl font-black tracking-tighter text-white">
+          MUST <span class="text-blue-400">AI</span>
+        </h1>
+        <p
+          class="text-[10px] text-slate-400 font-bold uppercase tracking-widest"
+        >
+          School of Computing
+        </p>
+      </div>
+
+      <nav class="space-y-4 flex-1" id="nav-menu">
+        <div
+          id="nav-dashboard"
+          class="bg-blue-600/20 border-l-4 border-blue-500 p-3 rounded-r cursor-pointer hover:bg-blue-600/40 transition"
+          onclick="loadView('dashboard')"
+        >
+          <a class="block font-bold text-blue-400 pointer-events-none"
+            >Intelligence Dashboard</a
+          >
+        </div>
+        <a
+          id="nav-audit"
+          href="#"
+          onclick="loadView('audit')"
+          class="block p-3 text-slate-400 hover:text-white transition cursor-pointer"
+          >Student Risk Registry</a
+        >
+        <a
+          id="nav-forecast"
+          href="#"
+          onclick="loadView('forecaster')"
+          class="block p-3 text-slate-400 hover:text-white transition cursor-pointer"
+          >Performance Forecaster</a
+        >
+        <a
+          id="nav-reports"
+          href="#"
+          onclick="loadView('reports')"
+          class="block p-3 text-slate-400 hover:text-white transition cursor-pointer"
+          >Strategic Reports</a
+        >
+      </nav>
+
+      <div
+        class="bg-slate-800/50 p-4 rounded-xl text-xs border border-slate-700"
+      >
+        <p class="text-slate-500 mb-1">Composite Engine Status:</p>
+        <div class="flex items-center text-green-400 font-mono">
+          <span
+            class="w-2 h-2 bg-green-500 rounded-full mr-2 animate-pulse"
+          ></span>
+          PYCARET + GROQ LIVE
+        </div>
+      </div>
+    </div>
+
+    <div class="flex-1 flex flex-col overflow-y-auto">
+      <header
+        class="bg-white p-6 shadow-sm flex justify-between items-center border-b sticky top-0 z-10"
+      >
+        <div>
+          <h2 id="header-title" class="text-xl font-bold text-slate-800">
+            Administrative Monitor
+          </h2>
+          <p class="text-xs text-slate-500">
+            Real-time tracking of Student Attendance vs. CAT Performance
+          </p>
+        </div>
+        <div class="flex items-center space-x-6">
+          <div id="notif-bell" class="relative">
+            <span
+              class="absolute -top-1 -right-1 bg-red-600 text-white text-[10px] px-1.5 py-0.5 rounded-full font-bold shadow-lg"
+              id="alert-count"
+              >0</span
+            >
+            <svg
+              class="w-6 h-6 text-slate-400"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"
+              ></path>
+            </svg>
+          </div>
+          <div
+            id="user-role-badge"
+            class="h-10 px-4 bg-blue-100 rounded-full flex items-center justify-center text-blue-700 font-bold border-2 border-blue-200 uppercase text-xs"
+          >
+            Lock
+          </div>
+          <button
+            onclick="logout()"
+            class="text-xs text-slate-400 hover:text-red-500 transition font-bold"
+          >
+            Log Out
+          </button>
+        </div>
+      </header>
+
+      <main
+        id="app-content"
+        class="p-8 space-y-8 max-w-6xl mx-auto w-full"
+      ></main>
+    </div>
+
+    <script src="js/app.js"></script>
+  </body>
+</html>

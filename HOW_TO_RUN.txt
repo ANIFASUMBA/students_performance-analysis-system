@@ -1,0 +1,44 @@
+STUDENT PERFORMANCE ANALYSIS SYSTEM - SHARE PACKAGE
+
+This package is sanitized for sharing.
+No real API keys are included.
+
+========== QUICK START (RECOMMENDED) ==========
+
+1) Extract this zip
+2) Run one of the setup scripts (choose one):
+   
+   WINDOWS (Batch):
+   - Double-click SETUP.bat
+   - Or: cmd /c SETUP.bat
+   
+   WINDOWS (PowerShell):
+   - Right-click and select "Run with PowerShell"
+   - Or: powershell -ExecutionPolicy Bypass -File .\SETUP.ps1
+
+3) Edit .env file with your API keys:
+   - SUPABASE_KEY (required)
+   - GROQ_API_KEY (optional, for AI advisor)
+   - AT_API_KEY + AT_USERNAME (optional, for SMS)
+   - COD/DEAN usernames and passwords (optional, for demo)
+
+4) Start backend:
+   python -m uvicorn backend.app.main:app --reload
+
+5) Open frontend/index.html in your browser
+
+========== MANUAL SETUP ==========
+
+If you prefer manual setup:
+- python -m venv venv
+- venv\Scripts\activate (Windows) or source venv/bin/activate (Linux/Mac)
+- pip install -r requirements.txt
+- Copy .env.example to .env and fill in your keys
+- python -m uvicorn backend.app.main:app --reload
+
+========== IMPORTANT SECURITY NOTES ==========
+
+- Never commit or share your .env file
+- Do NOT commit venv/ folder to git
+- Rotate any key that was previously hardcoded in old files
+- Use .gitignore rules to prevent accidental secret leaks
