@@ -1,4 +1,5 @@
 The Student Academic Performance System is a centralized digital platform designed to track, analyze, and manage student educational data to enhance learning outcomes.
 By integrating modules for grade entry, attendance monitoring, and automated GPA calculation, the system provides educators with real-time insights into individual and class-wide progress.
 It utilizes data visualization tools to identify at-risk students early, allowing for timely academic interventions and personalized support strategies. 
-Built with a focus on security and accessibility, the application ensures that administrators, teachers, and parents can securely collaborate to foster a data-driven educational environment. This comprehensive solution streamlines administrative workflows, reducing manual errors while empowering stakeholders to make informed decisions that drive overall academic excellence.
+Built with a focus on security and accessibility, the application ensures that administrators, teachers, and parents can securely collaborate to foster a data-driven educational environment. 
+This comprehensive solution streamlines administrative workflows, reducing manual errors while empowering stakeholders to make informed decisions that drive overall academic excellence.
